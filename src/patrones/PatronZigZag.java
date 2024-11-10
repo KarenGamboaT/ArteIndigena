@@ -20,18 +20,18 @@ public class PatronZigZag {
     }
 
     public void dibujarZigZag(Graphics2D g) {
-        for (int j = 0; j < columnas; j++) {
-            int xInicial = j * tamanoFigura; // Posición inicial en x para cada columna
+        for (int i = 0; i < filas; i++) {
+            int y = i * (tamanoFigura + espacioEntreLineas); // Posición inicial en y para cada fila
             boolean direccion = true; // Alterna entre arriba y abajo para formar el zigzag
 
-            for (int i = 0; i < filas; i++) {
-                int yInicial = i * (tamanoFigura + espacioEntreLineas); // Espacio entre filas
+            for (int j = 0; j < columnas; j++) {
+                int x = j * tamanoFigura; // Posición inicial en x para cada columna de la fila
 
                 // Dibuja una línea en zigzag en la dirección indicada
-                Linea linea = new Linea(xInicial, yInicial, tamanoFigura, tamanoFigura, color, direccion);
+                Linea linea = new Linea(x, y, tamanoFigura, tamanoFigura, color, direccion);
                 linea.dibujar(g);
 
-                // Alterna la dirección para el próximo segmento del zigzag
+                // Alterna la dirección para el próximo segmento del zigzag en la misma fila
                 direccion = !direccion;
             }
         }

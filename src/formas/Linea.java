@@ -14,19 +14,14 @@ public class Linea extends Figura {
         this.direccion = direccion;
     }
 
-    public Linea(int xInicial, int yInicial, int xFinal, int yFinal, Color color) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
     @Override
     public void dibujar(Graphics2D g) {
-        g.setColor(color);
-        g.setStroke(new BasicStroke(2)); // Define el grosor de la línea
+        g.setColor(Color.BLACK);
+        g.setStroke(new BasicStroke(6));
 
         int xFinal = x + longitud;
         int yFinal = direccion ? y - tamano : y + tamano; // Alterna dirección
 
-        // Dibuja la línea desde el punto inicial (x, y) hasta el punto final (xFinal, yFinal)
         g.drawLine(x, y, xFinal, yFinal);
     }
 }

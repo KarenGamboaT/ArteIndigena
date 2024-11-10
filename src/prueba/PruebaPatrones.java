@@ -2,10 +2,7 @@
 package prueba;
 
 import formas.Cuadrado;
-import formas.Figura;
-//import formas.Triangulo;
 import formas.Rombo;
-//import formas.Circulo;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Color;
@@ -32,31 +29,26 @@ public class PruebaPatrones extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-
-            // Ya no necesitas crear una figura como Cuadrado, Triangulo, etc.
-            // Solo pasas el tamaño de la figura y el color que desees.
-
-            Color color = Color.BLUE; // Puedes usar cualquier color que desees
-            int tamanoFigura = 30;    // El tamaño de cada "segmento" del zigzag
-            PatronZigZag zigzag = new PatronZigZag(10, 20, tamanoFigura, color,0); // Sin figura, solo tamaño y color
-            zigzag.dibujarZigZag((Graphics2D) g); // Llama al método para dibujar el zigzag
+            Color color = Color.BLUE;
+            int tamanoFigura = 30;
+            PatronZigZag zigzag = new PatronZigZag(10, 20, tamanoFigura, color,0);
+            zigzag.dibujarZigZag((Graphics2D) g);
         }
     }
+    
     class PanelPatronMosaico extends JPanel {
-        @Override
+    @Override
         protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Cuadrado cuadrado = new Cuadrado(1,1,1,Color.YELLOW);
-            Rombo rombo = new Rombo(1,1,1,Color.BLACK);
-            //Triangulo triangulo = new Triangulo (1, 1, 1, Color.RED);
-            //Circulo circulo = new Circulo (1, 1, 1, Color.YELLOW);
+            super.paintComponent(g);           
+            Rombo rombo = new Rombo(5,5,50, Color.black);
             
-            PatronMosaico mosaico = new PatronMosaico(5, 5, 50, cuadrado, Color.YELLOW, rombo, Color.BLACK);
+            Cuadrado cuadrado1 = new Cuadrado(5,5,50,Color.black);
+            
+            PatronMosaico mosaico = new PatronMosaico(5, 5, 50, cuadrado1);
             mosaico.dibujarMosaico((Graphics2D) g);
         }
     }
-
-    // Panel para probar el patrón Alternante
+        
     class PanelPatronAlternante extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
