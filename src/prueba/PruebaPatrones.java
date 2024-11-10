@@ -58,10 +58,10 @@ public class PruebaPatrones extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            PruebaPatrones prueba = new PruebaPatrones();
-            prueba.setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            PruebaPatrones prueba = new PruebaPatrones();
+//            prueba.setVisible(true);
+//        });
+//    }
 }
