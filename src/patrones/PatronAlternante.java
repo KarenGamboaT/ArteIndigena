@@ -4,6 +4,7 @@ package patrones;
 import formas.Circulo;
 import formas.Cuadrado;
 import formas.Rombo;
+import formas.Triangulo;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -15,6 +16,7 @@ public class PatronAlternante {
     private Color colorFigura1;
     private String tipoFigura2;
     private Color colorFigura2;
+   
 
     // Constructor para el patrón alternante
     public PatronAlternante(int filas, int columnas, int tamanoFigura, 
@@ -27,6 +29,7 @@ public class PatronAlternante {
         this.colorFigura1 = colorFigura1;
         this.tipoFigura2 = tipoFigura2;
         this.colorFigura2 = colorFigura2;
+        
     }
 
     // Método para dibujar el patrón alternante
@@ -48,6 +51,9 @@ public class PatronAlternante {
                         case "Rombo":
                             Rombo rombo = new Rombo(x, y, tamanoFigura, colorFigura1);
                             rombo.dibujar(g);
+                        case "Triangulo":
+                            Triangulo triangulo = new Triangulo (x, y, tamanoFigura, colorFigura1);
+                            triangulo.dibujar(g);
                         break;
                         // Agregar más figuras si es necesario
                     }
@@ -63,11 +69,16 @@ public class PatronAlternante {
                         case "Rombo":
                             Rombo rombo = new Rombo(x, y, tamanoFigura, colorFigura2);
                             rombo.dibujar(g);
-                        break;
+                            break;
+                        case "Triangulo":
+                            Triangulo triangulo = new Triangulo (x, y, tamanoFigura, colorFigura2);
+                            triangulo.dibujar(g);
+                            break;
                         // Agregar más figuras si es necesario
          
-                }
-            }
+                    }
+//                    
         }
     }
+}
 }
