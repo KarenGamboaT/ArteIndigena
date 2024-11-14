@@ -29,8 +29,9 @@ public class VentanaAlternante extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        CombinacionFiguras = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -39,19 +40,23 @@ public class VentanaAlternante extends javax.swing.JFrame {
 
         jLabel1.setText("Bienvenido al patrón Alternante");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(120, 90, 260, 16);
+        jLabel1.setBounds(120, 100, 260, 16);
 
         jLabel2.setText("Seleccione su combinación favorita:");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(100, 240, 220, 16);
+        jLabel2.setBounds(100, 250, 220, 16);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rombo y circulo", "Rombo y cuadrado", "Rombo y Triangulo", "Circulo y cuadrado", "Circulo y Triangulo", "Cuadrado y triangulo", " ", " " }));
-        jPanel1.add(jComboBox1);
-        jComboBox1.setBounds(130, 280, 140, 22);
+        CombinacionFiguras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rombo y circulo", "Rombo y cuadrado", "Rombo y Triangulo", "Circulo y cuadrado", "Circulo y Triangulo", "Cuadrado y triangulo", " ", " " }));
+        jPanel1.add(CombinacionFiguras);
+        CombinacionFiguras.setBounds(130, 280, 140, 22);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/AlternanteeDinal.jpg"))); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(100, 100, 210, 140);
+        jLabel3.setBounds(100, 110, 210, 140);
+
+        jButton1.setText("Aceptar");
+        jPanel1.add(jButton1);
+        jButton1.setBounds(160, 320, 72, 23);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,7 +108,8 @@ public class VentanaAlternante extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> CombinacionFiguras;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

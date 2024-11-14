@@ -289,39 +289,71 @@ private void abrirVentanaMosaico(){
     public JPanel getPanelMosaico(){
     return this.PanelMosaico;
     }
-    void dibujarMosaico(String seleccion) {
-    Graphics g = PanelMosaico.getGraphics();
-    
-    if (g!=null){
-        Figura figuraSeleccionada =null;
-    
+    void dibujarMosaico(String figura) {
+    panelMosaico.repaint();
+        Graphics g = panelMosaico.getGraphics();
 
-    switch(seleccion) {
-        case "Circulo":
-            figuraSeleccionada = new Circulo(1,1,30, Color.BLUE); // Asumiendo que Circulo es una clase de tipo Figura
-            break;
-        case "Cuadrado":
-            figuraSeleccionada = new Cuadrado(1,1,30, Color.YELLOW); // Lo mismo para Cuadrado
-            break;
-        case "Triangulo":
-            figuraSeleccionada = new Triangulo(1,1,30, Color.BLUE);
-            break;
-        case "Rombo":
-            figuraSeleccionada = new Rombo(1,1,30, Color.RED);
-            break;
+        // Dependiendo de la figura seleccionada, dibujamos una forma
+        switch (figura) {
+            case "Cuadrado":
+                dibujarCuadrado(g);
+                break;
+            case "Circulo":
+                dibujarCirculo(g);
+                break;
+            case "Triangulo":
+                dibujarTriangulo(g);
+                break;
+            case "Rombo":
+                dibujarRombo(g);
+                break;
+            default:
+                break;
+        }
     }
 
-    if (figuraSeleccionada != null) {
-        figuraSeleccionada.dibujar((Graphics2D) g); // Esto depende de cómo esté implementado el método 'dibujar' de tus figuras
+    // Método para dibujar un cuadrado
+    private void dibujarCuadrado(Graphics g) {
+        g.setColor(Color.BLUE);  // Establecemos el color del cuadrado
+        g.fillRect(50, 50, 100, 100);  // Dibujamos un cuadrado
     }
-    PanelMosaico.repaint();  // Fuerza la actualización del panel
 
-    }else{
-        System.out.println("Error");
+    // Método para dibujar un círculo
+    private void dibujarCirculo(Graphics g) {
+        g.setColor(Color.RED);  // Establecemos el color del círculo
+        g.fillOval(50, 50, 100, 100);  // Dibujamos un círculo
     }
+
+    // Método para dibujar un triángulo
+    private void dibujarTriangulo(Graphics g) {
+        g.setColor(Color.GREEN);  // Establecemos el color del triángulo
+        int[] xPoints = {50, 150, 100};  // Coordenadas x de los puntos del triángulo
+        int[] yPoints = {50, 50, 150};  // Coordenadas y de los puntos del triángulo
+        g.fillPolygon(xPoints, yPoints, 3);  // Dibujamos un triángulo
+    }
+
+    // Método para dibujar un rombo
+    private void dibujarRombo(Graphics g) {
+        g.setColor(Color.YELLOW);  // Establecemos el color del rombo
+        int[] xPoints = {100, 150, 100, 50};  // Coordenadas x del rombo
+        int[] yPoints = {50, 100, 150, 100};  // Coordenadas y del rombo
+        g.fillPolygon(xPoints, yPoints, 4);  // Dibujamos un rombo
+    }
+
+    private static class panelMosaico {
+
+        private static Graphics getGraphics() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        private static void repaint() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        public panelMosaico() {
+        }
     }
 }
-
   
     
 
