@@ -30,14 +30,6 @@ public class PatronMosaico {
     }
 
     public void dibujarMosaico(Graphics2D g) {
-        // Define los cinco colores representativos de los aztecas
-        List<Color> coloresAztecas = new ArrayList<>();
-        coloresAztecas.add(new Color(139, 0, 0)); // Rojo oscuro
-        coloresAztecas.add(new Color(0, 100, 0)); // Verde oscuro
-        coloresAztecas.add(new Color(0, 0, 139)); // Azul oscuro
-        coloresAztecas.add(new Color(255, 215, 0)); // Amarillo dorado
-        coloresAztecas.add(new Color(0, 0, 0)); // Negro
-
         Random rand = new Random();
 
         for (int i = 0; i < filas; i++) {
@@ -48,8 +40,8 @@ public class PatronMosaico {
                 // Selecciona un color al azar de la lista de colores
                 Color colorActual = coloresAztecas.get(rand.nextInt(coloresAztecas.size()));
 
-                // Crea una nueva instancia de la figura con la posición y color aleatorio
-                Figura figuraActual = figura.newFiguraNewColorNewPosicion(x + tamanoFigura / 2, y + tamanoFigura / 2, colorActual);
+                // Crea una nueva instancia de la figura con la posición exacta de la celda y color aleatorio
+                Figura figuraActual = figura.newFiguraNewColorNewPosicion(x, y, colorActual);
 
                 // Dibuja la figura en el gráfico
                 figuraActual.dibujar(g);

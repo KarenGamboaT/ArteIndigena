@@ -1,361 +1,276 @@
-
 package gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Graphics;
-import patrones.PatronMosaico;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import formas.Circulo;
-import formas.Triangulo;
 import formas.Cuadrado;
 import formas.Figura;
 import formas.Rombo;
-import java.awt.Color;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import gui.VentanaMosaico;
+import formas.Triangulo;
 import patrones.PatronZigZag;
+import patrones.PatronMosaico;
+import patrones.PatronAlternante;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
+public class InterfazGrafica extends JFrame {
+    private JPanel[] paneles = new JPanel[4];
+    private JButton[] botones = new JButton[4];
+    private String[] nombresBotones = {"Panel 1", "Panel 2", "Panel 3", "Panel 4"};
+    private JButton guardarImagenBtn;
+    private BufferedImage fondo;
 
-public class InterfazGrafica extends javax.swing.JFrame {
-    private javax.swing.JPanel PatronAlternante;
-    private javax.swing.JPanel PatronZigZagUno;
-    private javax.swing.JPanel PatronZigZagDos;
-    
-   
-
-   
-private void abrirVentanaMosaico(){
-    VentanaMosaico ventanaMosaico = new VentanaMosaico(this);
-    ventanaMosaico.setVisible(true);
-}
     public InterfazGrafica() {
-        
-        initComponents();
-        
-    }
-    
-   
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+        setTitle("Interfaz de Patrones");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-        jButton2 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLayeredPane2 = new javax.swing.JLayeredPane();
-        jLabel2 = new javax.swing.JLabel();
-        BotonZigZagDos = new javax.swing.JButton();
-        PanelAlternante = new javax.swing.JPanel();
-        PanelZigZagUno = new javax.swing.JPanel();
-        PanelMosaico = new javax.swing.JPanel();
-        PanelZigZagDos = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        BotonAlternante = new javax.swing.JButton();
-        BotonZigZagUno = new javax.swing.JButton();
-        BotonMosaico = new javax.swing.JButton();
+        // Cargar imagen de fondo
+        try {
+            fondo = ImageIO.read(getClass().getResource("/gui/imagen.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar la imagen de fondo");
+        }
 
-        jButton2.setText("jButton2");
+        // Panel principal para componentes
+        JPanel mainPanel = new JPanel(new GridBagLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (fondo != null) {
+                    g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+        mainPanel.setOpaque(false); 
+        mainPanel.setPreferredSize(new Dimension((int) (800 * 0.8), (int) (600 * 0.8)));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.insets = new Insets(2, 2, 2, 2);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridwidth = 1;
 
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        // Crear botones y paneles
+        for (int i = 0; i < 4; i++) {
+            // Configuración del botón
+            botones[i] = new JButton();
+            ImageIcon iconoImagen = new ImageIcon(getClass().getResource("/gui/imagen2.jpg"));
+            Image imagenBoton = iconoImagen.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+            botones[i].setIcon(new ImageIcon(imagenBoton));
+            botones[i].setForeground(Color.WHITE);
+            botones[i].setFont(new Font("Arial", Font.BOLD, 16));
+            botones[i].setBorderPainted(false);
+            botones[i].setContentAreaFilled(false);
+            botones[i].setFocusPainted(false);
+            botones[i].setHorizontalTextPosition(SwingConstants.CENTER);
+            botones[i].setVerticalTextPosition(SwingConstants.CENTER);
 
-        jLayeredPane2.setMaximumSize(new java.awt.Dimension(1550, 800));
-        jLayeredPane2.setMinimumSize(new java.awt.Dimension(1550, 800));
+            int index = i;
+            botones[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    seleccionarPatron(index);
+                }
+            });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Sin-título-5.jpg"))); // NOI18N
-        jLabel2.setMaximumSize(new java.awt.Dimension(1300, 800));
-        jLabel2.setMinimumSize(new java.awt.Dimension(1300, 800));
-        jLayeredPane2.add(jLabel2);
-        jLabel2.setBounds(0, -20, 1540, 820);
+            gbc.gridx = 0;
+            gbc.gridy = i;
+            mainPanel.add(botones[i], gbc);
 
-        BotonZigZagDos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/ICONOO.jpg"))); // NOI18N
-        BotonZigZagDos.setContentAreaFilled(false);
-        BotonZigZagDos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonZigZagDosActionPerformed(evt);
+            // Configuración del panel
+            paneles[i] = new JPanel() {
+                @Override
+                public Dimension getPreferredSize() {
+                    return new Dimension(900, 80);
+                }
+
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    setDoubleBuffered(true);
+                }
+            };
+            paneles[i].setBackground(new Color(255, 255, 255, 150));
+            gbc.gridx = 1;
+            mainPanel.add(paneles[i], gbc);
+        }
+
+        // Botón para guardar imagen
+        guardarImagenBtn = new JButton("Guardar Captura");
+        guardarImagenBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guardarImagenPatrones();
             }
         });
-        jLayeredPane2.setLayer(BotonZigZagDos, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane2.add(BotonZigZagDos);
-        BotonZigZagDos.setBounds(150, 510, 80, 80);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        mainPanel.add(guardarImagenBtn, gbc);
 
-        PanelAlternante.setBackground(new java.awt.Color(255, 204, 204));
-
-        javax.swing.GroupLayout PanelAlternanteLayout = new javax.swing.GroupLayout(PanelAlternante);
-        PanelAlternante.setLayout(PanelAlternanteLayout);
-        PanelAlternanteLayout.setHorizontalGroup(
-            PanelAlternanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1060, Short.MAX_VALUE)
-        );
-        PanelAlternanteLayout.setVerticalGroup(
-            PanelAlternanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jLayeredPane2.setLayer(PanelAlternante, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane2.add(PanelAlternante);
-        PanelAlternante.setBounds(280, 200, 1060, 100);
-
-        PanelZigZagUno.setBackground(new java.awt.Color(204, 204, 255));
-
-        javax.swing.GroupLayout PanelZigZagUnoLayout = new javax.swing.GroupLayout(PanelZigZagUno);
-        PanelZigZagUno.setLayout(PanelZigZagUnoLayout);
-        PanelZigZagUnoLayout.setHorizontalGroup(
-            PanelZigZagUnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1060, Short.MAX_VALUE)
-        );
-        PanelZigZagUnoLayout.setVerticalGroup(
-            PanelZigZagUnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jLayeredPane2.setLayer(PanelZigZagUno, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane2.add(PanelZigZagUno);
-        PanelZigZagUno.setBounds(280, 300, 1060, 100);
-
-        PanelMosaico.setBackground(new java.awt.Color(204, 255, 204));
-
-        javax.swing.GroupLayout PanelMosaicoLayout = new javax.swing.GroupLayout(PanelMosaico);
-        PanelMosaico.setLayout(PanelMosaicoLayout);
-        PanelMosaicoLayout.setHorizontalGroup(
-            PanelMosaicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1060, Short.MAX_VALUE)
-        );
-        PanelMosaicoLayout.setVerticalGroup(
-            PanelMosaicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jLayeredPane2.setLayer(PanelMosaico, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane2.add(PanelMosaico);
-        PanelMosaico.setBounds(280, 400, 1060, 100);
-
-        PanelZigZagDos.setBackground(new java.awt.Color(255, 255, 204));
-
-        javax.swing.GroupLayout PanelZigZagDosLayout = new javax.swing.GroupLayout(PanelZigZagDos);
-        PanelZigZagDos.setLayout(PanelZigZagDosLayout);
-        PanelZigZagDosLayout.setHorizontalGroup(
-            PanelZigZagDosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1060, Short.MAX_VALUE)
-        );
-        PanelZigZagDosLayout.setVerticalGroup(
-            PanelZigZagDosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jLayeredPane2.setLayer(PanelZigZagDos, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane2.add(PanelZigZagDos);
-        PanelZigZagDos.setBounds(280, 500, 1060, 100);
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/presiona.jpg"))); // NOI18N
-        jLayeredPane2.setLayer(jLabel3, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane2.add(jLabel3);
-        jLabel3.setBounds(130, 130, 140, 70);
-
-        BotonAlternante.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/ICONOO.jpg"))); // NOI18N
-        BotonAlternante.setContentAreaFilled(false);
-        BotonAlternante.addContainerListener(new java.awt.event.ContainerAdapter() {
-            public void componentAdded(java.awt.event.ContainerEvent evt) {
-                BotonAlternanteComponentAdded(evt);
-            }
-            public void componentRemoved(java.awt.event.ContainerEvent evt) {
-                BotonAlternanteComponentRemoved(evt);
-            }
-        });
-        BotonAlternante.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                BotonAlternanteComponentShown(evt);
-            }
-        });
-        BotonAlternante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonAlternanteActionPerformed(evt);
-            }
-        });
-        jLayeredPane2.setLayer(BotonAlternante, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane2.add(BotonAlternante);
-        BotonAlternante.setBounds(150, 210, 80, 80);
-
-        BotonZigZagUno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/ICONOO.jpg"))); // NOI18N
-        BotonZigZagUno.setContentAreaFilled(false);
-        BotonZigZagUno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonZigZagUnoActionPerformed(evt);
-            }
-        });
-        jLayeredPane2.setLayer(BotonZigZagUno, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane2.add(BotonZigZagUno);
-        BotonZigZagUno.setBounds(150, 310, 80, 80);
-
-        BotonMosaico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/ICONOO.jpg"))); // NOI18N
-        BotonMosaico.setContentAreaFilled(false);
-        BotonMosaico.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonMosaicoActionPerformed(evt);
-            }
-        });
-        jLayeredPane2.setLayer(BotonMosaico, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jLayeredPane2.add(BotonMosaico);
-        BotonMosaico.setBounds(150, 410, 80, 80);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1550, Short.MAX_VALUE)
-            .addComponent(jLayeredPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLayeredPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void BotonZigZagDosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonZigZagDosActionPerformed
-        PatronZigZag patronZigZag2 = new PatronZigZag(100, 100, 30, Color.BLUE, 10);
-        Graphics g = PanelZigZagDos.getGraphics();
-        patronZigZag2.dibujarZigZag((Graphics2D) g);
-        
-    }//GEN-LAST:event_BotonZigZagDosActionPerformed
-
-    private void BotonAlternanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonAlternanteActionPerformed
-       
-        VentanaAlternante escogeFiguras = new VentanaAlternante();
-        escogeFiguras.setSize(400,400);
-        escogeFiguras.setVisible(true);     
-    }//GEN-LAST:event_BotonAlternanteActionPerformed
-
-    private void BotonZigZagUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonZigZagUnoActionPerformed
-        PatronZigZag patronZigZag1 = new PatronZigZag(100, 100, 30, Color.RED, 10);
-        Graphics g = PanelZigZagUno.getGraphics();
-        patronZigZag1.dibujarZigZag((Graphics2D) g);
-        
-    }//GEN-LAST:event_BotonZigZagUnoActionPerformed
-
-    private void BotonMosaicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonMosaicoActionPerformed
-       
-        VentanaMosaico escogeFigura = new VentanaMosaico(this);
-        escogeFigura.setSize(400,400);
-        escogeFigura.setVisible(true);
-        PanelMosaico.repaint();  // Fuerza la actualización del panel
-
-    }//GEN-LAST:event_BotonMosaicoActionPerformed
-
-    private void BotonAlternanteComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_BotonAlternanteComponentAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BotonAlternanteComponentAdded
-
-    private void BotonAlternanteComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_BotonAlternanteComponentRemoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BotonAlternanteComponentRemoved
-
-    private void BotonAlternanteComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_BotonAlternanteComponentShown
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BotonAlternanteComponentShown
-
-    public static void main(String args[]) {
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InterfazGrafica().setVisible(true);
-            }
-        });
+        add(mainPanel, BorderLayout.CENTER);
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BotonAlternante;
-    private javax.swing.JButton BotonMosaico;
-    private javax.swing.JButton BotonZigZagDos;
-    private javax.swing.JButton BotonZigZagUno;
-    private javax.swing.JPanel PanelAlternante;
-    private javax.swing.JPanel PanelMosaico;
-    private javax.swing.JPanel PanelZigZagDos;
-    private javax.swing.JPanel PanelZigZagUno;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLayeredPane jLayeredPane2;
-    private javax.swing.JPanel jPanel1;
-    // End of variables declaration//GEN-END:variables
-
-    public JPanel getPanelMosaico(){
-    return this.PanelMosaico;
+    private Color obtenerColorAztecaAleatorio() {
+        List<Color> coloresAztecas = new ArrayList<>();
+        coloresAztecas.add(new Color(139, 0, 0)); // Rojo oscuro
+        coloresAztecas.add(new Color(0, 100, 0)); // Verde oscuro
+        coloresAztecas.add(new Color(0, 0, 139)); // Azul oscuro
+        coloresAztecas.add(new Color(255, 215, 0)); // Dorado
+        coloresAztecas.add(new Color(0, 0, 0)); // Negro
+        Random random = new Random();
+        return coloresAztecas.get(random.nextInt(coloresAztecas.size()));
     }
-    void dibujarMosaico(String figura) {
-    panelMosaico.repaint();
-        Graphics g = panelMosaico.getGraphics();
 
-        // Dependiendo de la figura seleccionada, dibujamos una forma
-        switch (figura) {
-            case "Cuadrado":
-                dibujarCuadrado(g);
-                break;
-            case "Circulo":
-                dibujarCirculo(g);
-                break;
-            case "Triangulo":
-                dibujarTriangulo(g);
-                break;
-            case "Rombo":
-                dibujarRombo(g);
-                break;
-            default:
-                break;
+    private void seleccionarPatron(int index) {
+        String[] patrones = {"Mosaico", "Zigzag", "Alternante"};
+        String seleccion = (String) JOptionPane.showInputDialog(
+                this,
+                "Selecciona un patrón:",
+                "Opciones de Patrón",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                patrones,
+                patrones[0]
+        );
+
+        if (seleccion != null) {
+            switch (seleccion) {
+                case "Mosaico":
+                    dibujarMosaico(paneles[index]);
+                    break;
+                case "Zigzag":
+                    dibujarZigZag(paneles[index]);
+                    break;
+                case "Alternante":
+                    dibujarAlternante(paneles[index]);
+                    break;
+            }
         }
     }
 
-    // Método para dibujar un cuadrado
-    private void dibujarCuadrado(Graphics g) {
-        g.setColor(Color.BLUE);  // Establecemos el color del cuadrado
-        g.fillRect(50, 50, 100, 100);  // Dibujamos un cuadrado
+    private void dibujarMosaico(JPanel panel) {
+        BufferedImage imagen = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = imagen.createGraphics();
+
+        String[] figuras = {"Cuadrado", "Círculo", "Triángulo", "Rombo"};
+        String seleccionFigura = (String) JOptionPane.showInputDialog(
+                this,
+                "Selecciona una figura para el mosaico:",
+                "Opciones de Figura",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                figuras,
+                figuras[0]
+        );
+
+        if (seleccionFigura != null) {
+            Figura figura = null;
+            switch (seleccionFigura) {
+                case "Cuadrado":
+                    figura = new Cuadrado(20, 20, 50, obtenerColorAztecaAleatorio());
+                    break;
+                case "Círculo":
+                    figura = new Circulo(20, 20, 50, obtenerColorAztecaAleatorio());
+                    break;
+                case "Triángulo":
+                    figura = new Triangulo(20, 20, 50, obtenerColorAztecaAleatorio());
+                    break;
+                case "Rombo":
+                    figura = new Rombo(20, 20, 50, obtenerColorAztecaAleatorio());
+                    break;
+            }
+            if (figura != null) {
+                PatronMosaico mosaico = new PatronMosaico(20, 20, 50, figura);
+                mosaico.dibujarMosaico(g);
+            }
+        }
+        g.dispose();
+        panel.getGraphics().drawImage(imagen, 0, 0, panel.getWidth(), panel.getHeight(), panel);
+        panel.putClientProperty("backgroundImage", imagen);
     }
 
-    // Método para dibujar un círculo
-    private void dibujarCirculo(Graphics g) {
-        g.setColor(Color.RED);  // Establecemos el color del círculo
-        g.fillOval(50, 50, 100, 100);  // Dibujamos un círculo
+    private void dibujarZigZag(JPanel panel) {
+        BufferedImage imagen = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = imagen.createGraphics();
+        PatronZigZag zigzag = new PatronZigZag(200, 200, 30, obtenerColorAztecaAleatorio(), 5);
+        zigzag.dibujarZigZag(g);
+        g.dispose();
+        panel.getGraphics().drawImage(imagen, 0, 0, panel.getWidth(), panel.getHeight(), panel);
+        panel.putClientProperty("backgroundImage", imagen);
     }
 
-    // Método para dibujar un triángulo
-    private void dibujarTriangulo(Graphics g) {
-        g.setColor(Color.GREEN);  // Establecemos el color del triángulo
-        int[] xPoints = {50, 150, 100};  // Coordenadas x de los puntos del triángulo
-        int[] yPoints = {50, 50, 150};  // Coordenadas y de los puntos del triángulo
-        g.fillPolygon(xPoints, yPoints, 3);  // Dibujamos un triángulo
+    private void dibujarAlternante(JPanel panel) {
+        BufferedImage imagen = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = imagen.createGraphics();
+
+        String[] figuras = {"Cuadrado", "Círculo", "Triángulo", "Rombo"};
+        String seleccionFigura1 = (String) JOptionPane.showInputDialog(this, "Selecciona la primera figura para el alternante:", "Opciones de Figura", JOptionPane.PLAIN_MESSAGE, null, figuras, figuras[0]);
+        String seleccionFigura2 = (String) JOptionPane.showInputDialog(this, "Selecciona la segunda figura para el alternante:", "Opciones de Figura", JOptionPane.PLAIN_MESSAGE, null, figuras, figuras[0]);
+
+        if (seleccionFigura1 != null && seleccionFigura2 != null) {
+            Figura figura1 = crearFigura(seleccionFigura1);
+            Figura figura2 = crearFigura(seleccionFigura2);
+            if (figura1 != null && figura2 != null) {
+                PatronAlternante alternante = new PatronAlternante(20, 20, 50, figura1, obtenerColorAztecaAleatorio(), figura2, obtenerColorAztecaAleatorio());
+                alternante.dibujarAlternante(g);
+            }
+        }
+        g.dispose();
+        panel.getGraphics().drawImage(imagen, 0, 0, panel.getWidth(), panel.getHeight(), panel);
+        panel.putClientProperty("backgroundImage", imagen);
     }
 
-    // Método para dibujar un rombo
-    private void dibujarRombo(Graphics g) {
-        g.setColor(Color.YELLOW);  // Establecemos el color del rombo
-        int[] xPoints = {100, 150, 100, 50};  // Coordenadas x del rombo
-        int[] yPoints = {50, 100, 150, 100};  // Coordenadas y del rombo
-        g.fillPolygon(xPoints, yPoints, 4);  // Dibujamos un rombo
+    private Figura crearFigura(String tipo) {
+        switch (tipo) {
+            case "Cuadrado": return new Cuadrado(20, 20, 50, obtenerColorAztecaAleatorio());
+            case "Círculo": return new Circulo(20, 20, 50, obtenerColorAztecaAleatorio());
+            case "Triángulo": return new Triangulo(20, 20, 50, obtenerColorAztecaAleatorio());
+            case "Rombo": return new Rombo(20, 20, 50, obtenerColorAztecaAleatorio());
+            default: return null;
+        }
     }
 
-    private static class panelMosaico {
+    private void guardarImagenPatrones() {
+        int width = paneles[0].getWidth();
+        int height = paneles[0].getHeight() * 4;
+        BufferedImage capturaPatrones = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = capturaPatrones.createGraphics();
 
-        private static Graphics getGraphics() {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (int i = 0; i < paneles.length; i++) {
+            BufferedImage panelImagen = (BufferedImage) paneles[i].getClientProperty("backgroundImage");
+            if (panelImagen != null) {
+                int y = i * panelImagen.getHeight();
+                g2d.drawImage(panelImagen, 0, y, null);
+            }
         }
 
-        private static void repaint() {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
+        g2d.dispose();
 
-        public panelMosaico() {
+        try {
+            File archivo = new File("captura_solo_patrones.png");
+            ImageIO.write(capturaPatrones, "png", archivo);
+            JOptionPane.showMessageDialog(this, "Imagen guardada como captura_solo_patrones.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al guardar la imagen");
         }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            InterfazGrafica interfaz = new InterfazGrafica();
+            interfaz.setVisible(true);
+        });
     }
 }
-  
-    
-
-    
-
